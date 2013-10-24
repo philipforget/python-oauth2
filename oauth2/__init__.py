@@ -383,12 +383,12 @@ class Request(dict):
     def get_nonoauth_parameters(self):
         """Get any non-OAuth parameters."""
         return dict([(k, v) for k, v in self.iteritems() 
-                    if not k.startswith('oauth_')])
+                    if not k.startswith(('oauth_', 'x_auth_'))])
  
     def to_header(self, realm=''):
         """Serialize as a header for an HTTPAuth request."""
         oauth_params = ((k, v) for k, v in self.items() 
-                            if k.startswith('oauth_'))
+                            if k.startswith(('oauth_', 'x_auth_')))
         stringy_params = ((k, escape(str(v))) for k, v in oauth_params)
         header_params = ('%s="%s"' % (k, v) for k, v in stringy_params)
         params_header = ', '.join(header_params)
